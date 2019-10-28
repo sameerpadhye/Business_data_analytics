@@ -1,0 +1,1 @@
+The repository contains some data analyses techniques such as A/B testing and RFM analysis (along with data visualization wherever needed) used commonly in Business analytics. The analyses have been performed using PostgreSQL and/or R (or using both) 
