@@ -63,6 +63,7 @@ range(data_file$visit_date)
 
 #a. Data summary
 
+
 data_file%>%
     gather(click_types,
            click_values,
@@ -189,7 +190,7 @@ logistic_reg_model2
 # Hypothetically, if the base conversion rate of clicked share needs to be improved by say 5%, the new sample size for a followup experiment needs to be determined
 
 
-library(powerMediation)
+require(powerMediation)
 
 
 # Computing the sample size 
@@ -256,45 +257,13 @@ ab_experiment_results <- t.test(time_spent_homepage_sec ~ condition,
 
 #Results
 
+
 ab_experiment_results
 
 
 # From the analsysis it is clear that there is no significant difference in the time spent on the webpages using each of the two variants
 
 
+##WIP###
 
 
-
-## To check: https://www.r-bloggers.com/bayesian-ab-testing-made-easy/
-
-
-# ## Given the above information, weekly average difference in the conversion rates (likes) between the variants 'tips' and 'tools' can be calculated to get an average difference in rates
-# 
-# 
-# weekly_diff_condition<-data_file%>%
-#     gather(click_types,
-#            click_values,
-#            clicked_like:clicked_share)%>%
-#     mutate(weeks=week(visit_date))%>%
-#     group_by(weeks,
-#              condition,
-#              click_types)%>%
-#     summarise(conversion_rate=mean(click_values))%>%
-#     tidyr::spread(condition, 
-#                   conversion_rate)%>%
-#     dplyr::filter(click_types=='clicked_like')%>%
-#     dplyr::mutate(weekly_difference=tips-tools)
-# 
-# 
-# #Average
-# 
-# mean(weekly_diff_condition$weekly_difference,
-#      na.rm = T)
-# 
-# #Standard deviation
-# 
-# sd(weekly_diff_condition$weekly_difference,
-#    na.rm = T)
-# 
-# 
-# # Since the results of 'likes' action seem to be varying between the two variants (tips and tools) for all the weeks consistently, the significance of this difference will be checked by performing binary logistic regression with the 'likes' action as the dependent variable and the variants as the independent variable
