@@ -206,6 +206,55 @@ total_sample_size <- SSizeLogisticBin(p1 = 0.032,
 total_sample_size
 
 
+### Sequential Analysis
+
+
+#Sequential analysis performed based on the sample size estimated above for 3 stopping points to ascertain at which sampling time interval should the sample collection be stopped (if at all) given that the null hypothesis is rejected(at that stopping point) based on the data obtained from the sample size at the interval. 
+
+
+#This will ensure limiting 'p-hacking' and other factors (resources) used in generating the data
+
+
+#At any of the stopping points, if the analysis is performed and it yields statistically significant results (based on the p value obtained from the sequential analysis), sequential analsysis will be stopped
+
+
+#Sequential analysis will be carried out using the package 'gsDesign'
+
+
+if(!require(gsDesgin))install.packages('gsDesgin') 
+
+
+# Performing sequential analysis
+
+
+seq_analysis_click_data <- gsDesign(k = 3,
+                                    test.type = 1,
+                                    alpha = 0.05,
+                                    beta = 0.2,
+                                    sfu = "Pocock")
+
+
+# Fill in max number of points and compute points per group and find stopping points
+
+
+paste('Total sampling points for the current experiment are:',total_sample_size)
+
+
+# Since there are two variants of the condition (tips and tools) the sample size is divided in 2 equal sizes
+
+
+samples_per_grp <- total_sample_size / 2
+
+
+# Stopping points are then calculated based on the sequential analysis  and the sample size per group calculated above
+
+
+stop_points <- samples_per_grp * seq_analysis_click_data$timing
+
+
+stop_points
+
+
 ###. Exploring and asessing the difference in the mean weekly time spent based on the two variants (tips and tools)
 
 
