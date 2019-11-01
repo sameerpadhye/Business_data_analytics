@@ -209,7 +209,7 @@ total_sample_size
 ### Sequential Analysis
 
 
-#Sequential analysis performed based on the sample size estimated above for 3 stopping points to ascertain at which sampling time interval should the sample collection be stopped (if at all) given that the null hypothesis is rejected(at that stopping point) based on the data obtained from the sample size at the interval. 
+#Sequential analysis performed based on the sample size estimated above for 3 stopping points to ascertain at which sampling time interval should the sample collection be stopped (if at all) given that the null hypothesis is rejected(at that stopping point) based on the data obtained from the sample size at the interval (Please note that this number of samples is for purely for demonstration of the technique and is not necessarily a part of the workflow.A different arbitary number can be also used in its place)
 
 
 #This will ensure limiting 'p-hacking' and other factors (resources) used in generating the data
@@ -227,14 +227,14 @@ if(!require(gsDesgin))install.packages('gsDesgin')
 # Performing sequential analysis
 
 
-seq_analysis_click_data <- gsDesign(k = 3,
-                                    test.type = 1,
+seq_analysis_click_data <- gsDesign(k = 3, # number of 
+                                    test.type = 1, # Two or one sided test
                                     alpha = 0.05,
-                                    beta = 0.2,
-                                    sfu = "Pocock")
+                                    beta = 0.2, # (1 - power) value
+                                    sfu = "Pocock") # how the p values are calculated
 
 
-# Fill in max number of points and compute points per group and find stopping points
+# Fill in max number of points and compute points per group and find stopping points (here using ths total_sample_size calculated above)
 
 
 paste('Total sampling points for the current experiment are:',total_sample_size)
@@ -253,6 +253,9 @@ stop_points <- samples_per_grp * seq_analysis_click_data$timing
 
 
 stop_points
+
+
+# At any of the stop points if we perform analysis and get a significant result, the experiment can be stopped
 
 
 ###. Exploring and asessing the difference in the mean weekly time spent based on the two variants (tips and tools)
