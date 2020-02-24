@@ -405,7 +405,8 @@ ORDER BY reg_month ASC;
       LAG (current_customer_count) over (order by reg_month),
     1) AS previous_customer_count
   FROM mau)
-SELECT
+select
+current_customer_count,
     TO_CHAR(reg_month,'FMMonth YYYY') as month, 
    (current_customer_count -  previous_customer_count)::numeric/ previous_customer_count AS growth_rate
 FROM mau_with_lag
