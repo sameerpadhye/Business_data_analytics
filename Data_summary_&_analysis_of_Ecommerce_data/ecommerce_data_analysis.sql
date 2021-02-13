@@ -128,7 +128,7 @@ ecommerce_data
 
 create temp table revenue_item_type as (
 SELECT 
-rank () over (order by sum("UnitPrice" * "Quantity")::numeric desc) as item_rank,
+dense_rank () over (order by sum("UnitPrice" * "Quantity")::numeric desc) as item_rank,
 initcap("Description") as Item_description,
 "Country" as Country,
 round(sum("UnitPrice" * "Quantity")::numeric,3) AS revenue
@@ -159,7 +159,7 @@ revenue as Revenue
  ---- a2.1 Revenue by Country
  
  SELECT 
-rank() over (order by sum(revenue) desc) as country_rank,
+dense_rank() over (order by sum(revenue) desc) as country_rank,
  Country,
 round(sum(revenue)::numeric,2) as revenue
   FROM revenue_item_type
@@ -171,11 +171,12 @@ round(sum(revenue)::numeric,2) as revenue
  ---- a2.2 Top 10 countries generating the maximum revenue
  
  SELECT 
+country_rank,
  Country,
  revenue
  from
 (select
-rank() over (order by sum(revenue) desc) as country_rank,
+dense_rank() over (order by sum(revenue) desc) as country_rank,
  Country,
 sum(revenue) as revenue
   FROM revenue_item_type
@@ -315,7 +316,7 @@ SELECT
  (select
  description as Product_name,
   months as Month,
-  rank() over (partition by delivr_month order by revenue desc) as Rank,
+  dense_rank() over (partition by delivr_month order by revenue desc) as Rank,
   revenue
   from
   ranking_goods_revenue) sub_q
